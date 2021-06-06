@@ -3,4 +3,6 @@
 
 
 可自定义事件名称，deadline等要素
-详见markdown文件
+自动生成config.ini
+更多自定义设置详见config.ini
+
