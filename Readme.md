@@ -1,3 +1,6 @@
+<img width="1280" alt="Snipaste_2021-06-06_13-26-00" src="https://user-images.githubusercontent.com/45707573/120913610-d25dfb00-c6ca-11eb-9e1a-80e1dfd01337.png">
+<img width="121" alt="Snipaste_2021-06-06_13-26-14" src="https://user-images.githubusercontent.com/45707573/120913613-d5f18200-c6ca-11eb-8493-f8baec69164f.png">
+
 config.ini放在timer.exe同级目录下
 
 文件结构
