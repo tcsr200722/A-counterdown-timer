@@ -84,6 +84,8 @@ void Dialog::readDate()
 
 void Dialog::INIT()
 {
+
+
     QApplication::setQuitOnLastWindowClosed(false);
     timer =  new QTimer();
     timer2 = new QTimer();
@@ -116,13 +118,6 @@ void Dialog::INIT()
     connect(m_hide_show,SIGNAL(triggered()),this,SLOT(m_hide_show_slot()));
     connect(m_start,SIGNAL(triggered()),this,SLOT(boot_at_power_on()));
 
-    //设置窗口透明镂空和总在最前
-    setWindowFlags(Qt::Tool|Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
-    setWindowFlags(this->windowFlags());
-    setWindowOpacity(1);
-    setAttribute(Qt::WA_TranslucentBackground);
-
-
     //查询开机启动
     boot();
 
@@ -130,6 +125,14 @@ void Dialog::INIT()
     write_ini();
     reg_ini();
     read_ini();
+
+    //设置窗口透明镂空和总在最前
+    setWindowFlags(Qt::Tool|Qt::FramelessWindowHint);
+    if(top_hint)
+        setWindowFlag(Qt::WindowStaysOnTopHint);
+    setWindowFlags(this->windowFlags());
+    setWindowOpacity(1);
+    setAttribute(Qt::WA_TranslucentBackground);
 
     //设置显示的文本
     font.setFamily(font_family);
@@ -320,6 +323,7 @@ void Dialog::write_ini()
         settings.setValue("/settings/y_axis", "0");
         settings.setValue("/settings/shining", "true");
         settings.setValue("settings/music_volume", "30");
+        settings.setValue("settings/top_hint", "true");
     }
 }
 
@@ -341,6 +345,7 @@ void Dialog::read_ini()
     y_axis = settings.value("settings/y_axis").toInt();
     shining = settings.value("settings/shining").toBool();
     music_volume = settings.value("settings/music_volume").toInt();
+    top_hint = settings.value("settings/top_hint").toBool();
     delete  reg;
 }
 

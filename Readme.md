@@ -1,5 +1,6 @@
-<img width="1280" alt="Snipaste_2021-06-06_13-26-00" src="https://user-images.githubusercontent.com/45707573/120913610-d25dfb00-c6ca-11eb-9e1a-80e1dfd01337.png">
-<img width="121" alt="Snipaste_2021-06-06_13-26-14" src="https://user-images.githubusercontent.com/45707573/120913613-d5f18200-c6ca-11eb-8493-f8baec69164f.png">
+![Snipaste_2021-06-06_13-31-07](C:\Users\Mr.Chang\Desktop\Snipaste_2021-06-06_13-31-07.png)
+
+![Snipaste_2021-06-06_13-26-14](C:\Users\Mr.Chang\Desktop\Snipaste_2021-06-06_13-26-14.png)
 
 config.ini放在timer.exe同级目录下
 
@@ -32,5 +33,11 @@ shining:
 ​	[false] 时间分隔符不闪烁
 
 music_volume: [0-100] 倒计时归零时，铃声的音量
+
+top_hint:
+
+​	[true] 置顶
+
+​	[false] 不置顶
 
 如果同级目录下存在"music.mp3"，则优先播放"music.mp3"，否则默认播放内置铃声

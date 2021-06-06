@@ -82,6 +82,8 @@ private:
 
     int music_volume;
 
+    bool top_hint;
+
 
 private slots:
     void UpdateTime();
