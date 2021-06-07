@@ -212,12 +212,8 @@ void Dialog::UpdateTime()
     time.setHMS(0, 0, 0, 0);
     int LeftSeconds=begin_time.secsTo(end_time);
     int Days,Hours,Minutes,Seconds;
-    if(LeftSeconds <= 0)
-    {
-        timer->disconnect();
-        play_music();
-        return;
-    }
+    int _LeftSeconds = LeftSeconds;
+
     //获取秒
     Seconds=LeftSeconds%60;
 
@@ -236,7 +232,14 @@ void Dialog::UpdateTime()
     //获取天
     Days=(LeftSeconds-Hours)/24;
     this->SetTime(Days,Hours,Minutes,Seconds);
-
+    if(_LeftSeconds <= 0)
+    {
+        this->SetTime(0,0,0,0);
+        shining = false;
+        timer->disconnect();
+        play_music();
+        return;
+    }
 }
 
 void Dialog::m_exit()
