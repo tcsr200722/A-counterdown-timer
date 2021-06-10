@@ -18,6 +18,7 @@
 #include <QUdpSocket>
 #include <QHostInfo>
 #include <QMediaPlayer>
+#include <QMouseEvent>
 
 #define AUTO_RUN "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
 #define INI_POS "HKEY_CURRENT_USER\\Software\\CountDownTimer"
@@ -97,6 +98,8 @@ private slots:
     void clock_calibration();
     void play_music();
 
+protected:
+    void mouseMoveEvent(QMouseEvent* event);
 };
 
 #endif // DIALOG_H

@@ -151,16 +151,10 @@ void Dialog::INIT()
     timer->start(100);
     timer2->start(500);
     screen = QGuiApplication::primaryScreen ();
-    QRect screenRect =  screen->availableVirtualGeometry();
-    if(x_axis>=0)
+    if(x_axis>=0 && y_axis>=0)
     {
         this->move(x_axis, y_axis);
     }
-    else
-    {
-        this->move(screenRect.width()-400, 60);
-    }
-
 }
 void Dialog::SetTime(int Days,int Hours,int Minutes,int Seconds)
 {
@@ -407,4 +401,9 @@ void Dialog::play_music()
     }
     player->setVolume(music_volume);
     player->play();
+}
+
+void Dialog::mouseMoveEvent(QMouseEvent *event)
+{
+    this->move(event->globalX(),event->globalY());
 }
