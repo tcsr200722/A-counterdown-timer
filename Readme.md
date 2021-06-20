@@ -1,4 +1,4 @@
-<img width="1280" alt="fullscreen" src="https://user-images.githubusercontent.com/45707573/122680172-88bff500-d220-11eb-8b91-debc9fe785aa.png">
+![无标题](https://user-images.githubusercontent.com/45707573/122690411-07865380-d25c-11eb-97e6-aa4a6e0589f3.jpg)
 
 config.ini放在timer.exe同级目录下
 
