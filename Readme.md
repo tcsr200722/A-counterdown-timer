@@ -1,4 +1,4 @@
-<img src="C:\Users\Mr.Chang\Desktop\fullscreen.png" alt="fullscreen" style="zoom:25%;" />
+<img width="1280" alt="fullscreen" src="https://user-images.githubusercontent.com/45707573/122680172-88bff500-d220-11eb-8b91-debc9fe785aa.png">
 
 config.ini放在timer.exe同级目录下
 
