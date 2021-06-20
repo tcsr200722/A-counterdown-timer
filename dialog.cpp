@@ -1,12 +1,14 @@
 #include "dialog.h"
 #include "ui_dialog.h"
-#include "windows.h"
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    ui->label_background->setVisible(false);
+    ui->label_logo->setStyleSheet("image: url(logo.png);");
+    ui->label_logo->setVisible(false);
     INIT();
 }
 
@@ -14,6 +16,7 @@ Dialog::~Dialog()
 {
     delete ui;
 }
+
 void Dialog::clock_calibration()
 {
     ntpIP = "ntp1.aliyun.com";
@@ -84,11 +87,10 @@ void Dialog::readDate()
 
 void Dialog::INIT()
 {
-
-
     QApplication::setQuitOnLastWindowClosed(false);
     timer =  new QTimer();
     timer2 = new QTimer();
+    timer3 = new QTimer();
     time_error = 0;
     dir_path = QApplication::applicationDirPath() + "/config.ini";
     file_path = QApplication::applicationFilePath();
@@ -99,23 +101,20 @@ void Dialog::INIT()
     m_trayIconMenu = new QMenu;
     m_start = new QAction(tr("开机启动"),this);
     m_clock_calibration = new QAction(tr("校准时间"), this);
-    m_hide_show = new QAction(tr("隐藏"), this);
     m_quit = new QAction(tr("退出"),this);
 
     m_trayIconMenu->addSeparator();
     m_trayIconMenu->addAction(m_start);
     m_trayIconMenu->addAction(m_clock_calibration);
-    m_trayIconMenu->addAction(m_hide_show);
     m_trayIconMenu->addAction(m_quit);
-
 
     m_trayIcon->setToolTip(tr("托盘菜单"));
     m_trayIcon->setIcon(QIcon("://Resource/tray.png"));
     m_trayIcon->setContextMenu(m_trayIconMenu);     //设置托盘上下文菜单
     m_trayIcon->show();
+    connect(m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(tray_double_click_left(QSystemTrayIcon::ActivationReason)));
     connect(m_quit,SIGNAL(triggered()),this,SLOT(m_exit()));
     connect(m_clock_calibration,SIGNAL(triggered()),this,SLOT(clock_calibration()));
-    connect(m_hide_show,SIGNAL(triggered()),this,SLOT(m_hide_show_slot()));
     connect(m_start,SIGNAL(triggered()),this,SLOT(boot_at_power_on()));
 
     //查询开机启动
@@ -146,15 +145,16 @@ void Dialog::INIT()
     //连接信号与槽
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(UpdateTime()));
     QObject::connect(timer2, SIGNAL(timeout()), this, SLOT(shine()));
+    QObject::connect(timer3, SIGNAL(timeout()), this, SLOT(move_logo()));
 
     //启动timer
     timer->start(100);
     timer2->start(500);
+    timer3->setInterval(3000);
     screen = QGuiApplication::primaryScreen ();
-    if(x_axis>=0 && y_axis>=0)
-    {
-        this->move(x_axis, y_axis);
-    }
+    this->move(0, 0);
+
+    //last_position = new QPoint;
 }
 void Dialog::SetTime(int Days,int Hours,int Minutes,int Seconds)
 {
@@ -247,12 +247,13 @@ void Dialog::m_hide_show_slot()
     {
         //隐藏
         shine_ = false;
-        m_hide_show->setText("显示");
         ui->label_2->setVisible(false);
         ui->label_3->setVisible(false);
         ui->label_4->setVisible(false);
         ui->label->setVisible(false);
         ui->label_background->setVisible(false);
+        ui->label_logo->setVisible(false);
+        ui->label_num_background->setVisible(false);
         ui->label_Days1->setVisible(false);
         ui->label_Days2->setVisible(false);
         ui->label_Days3->setVisible(false);
@@ -267,12 +268,11 @@ void Dialog::m_hide_show_slot()
     {
         //显示
         shine_ = true;
-        m_hide_show->setText("隐藏");
         ui->label_2->setVisible(true);
         ui->label_3->setVisible(true);
         ui->label_4->setVisible(true);
         ui->label->setVisible(true);
-        ui->label_background->setVisible(true);
+        ui->label_num_background->setVisible(true);
         ui->label_Days1->setVisible(true);
         ui->label_Days2->setVisible(true);
         ui->label_Days3->setVisible(true);
@@ -316,8 +316,6 @@ void Dialog::write_ini()
         settings.setValue("/settings/font_color", "#000000");
         settings.setValue("/settings/font_family", "微软雅黑");
         settings.setValue("/settings/font_bold", "true");
-        settings.setValue("/settings/x_axis", "0");
-        settings.setValue("/settings/y_axis", "0");
         settings.setValue("/settings/shining", "true");
         settings.setValue("settings/music_volume", "30");
         settings.setValue("settings/top_hint", "true");
@@ -328,7 +326,7 @@ void Dialog::read_ini()
 {
     QSettings *reg=new QSettings(INI_POS, QSettings::Registry64Format);
     QVariant value = reg->value(app_name);
-    QString iniFilePath = value.toString();
+    iniFilePath = value.toString();
 
     QSettings settings(iniFilePath,QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
@@ -338,8 +336,6 @@ void Dialog::read_ini()
     font_color = settings.value("settings/font_color").toString();
     font_family = settings.value("settings/font_family").toString().toUtf8();
     font_bold = settings.value("settings/font_bold").toBool();
-    x_axis = settings.value("settings/x_axis").toInt();
-    y_axis = settings.value("settings/y_axis").toInt();
     shining = settings.value("settings/shining").toBool();
     music_volume = settings.value("settings/music_volume").toInt();
     top_hint = settings.value("settings/top_hint").toBool();
@@ -403,7 +399,128 @@ void Dialog::play_music()
     player->play();
 }
 
-void Dialog::mouseMoveEvent(QMouseEvent *event)
+void Dialog::set_full_screen()
 {
-    this->move(event->globalX(),event->globalY());
+    timer3->start();
+    ui->label_background->setVisible(true);
+    ui->label_logo->setVisible(true);
+    ui->label->setStyleSheet("color:#ffffff");
+    this->setCursor(Qt::BlankCursor);
+    if(!ui->label->isVisible())
+        m_hide_show_slot();
+    move_logo();
+}
+
+void Dialog::keyPressEvent(QKeyEvent *ev)
+{
+    if(ev->key() == Qt::Key_Escape)
+    {
+        quit_full_screen();
+    }
+}
+
+void Dialog::move_logo()
+{
+    int x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_logo->geometry().width());
+    int y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_logo->geometry().height());
+    while(x>1098-130 && y < 50)
+    {
+        x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_logo->geometry().width());
+        y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_logo->geometry().height());
+    }
+    ui->label_logo->move(x, y);
+}
+/*
+void Dialog::check_collision()
+{
+    //设定移动轨迹有逆时针移动
+    QPoint p = ui->label_logo->pos();
+    //轨迹为右上或者左上
+    if(up_move)
+    {
+        //检查上边线碰撞，轨迹为向左上
+        //与上边线的距离小于5px认为碰撞
+        if(p.y()<5)
+        {
+            //向左下移动，夹角90
+            down_move = true;
+            up_move = false;
+            //计算当前轨迹与上边线夹角
+            double a = last_position->y() / (1440 - p.x());
+            double angle = 90 - qTan(a) * 180 / M_PI;
+
+
+        }
+        //检查右边线碰撞，轨迹为向右上
+        else if(1440 - p.x() < 5)
+        {
+            //向左上移动，夹角90
+        }
+    }
+    //轨迹为左下或者右下
+    else if(down_move)
+    {
+        //检查左边线碰撞
+        if(p.x()<5)
+        {
+            //向原本移动方向的对角线方向移动，夹角90
+        }
+        //检查下边线碰撞
+        else if(900 - p.y() < 5)
+        {
+            //向原本移动方向的对角线方向移动，夹角90
+        }
+    }
+
+
+}
+*/
+void Dialog::mouseDoubleClickEvent(QMouseEvent *ev)
+{
+    if(ev->button() == Qt::LeftButton && ui->label_background->isHidden())
+        set_full_screen();
+    else if(ev->button() == Qt::RightButton)
+    {
+        if(ui->label_background->isVisible())
+            quit_full_screen();
+        else
+            m_hide_show_slot();
+    }
+
+}
+
+void Dialog::quit_full_screen()
+{
+    if(ui->label_background->isVisible())
+    {
+        timer3->stop();
+        ui->label_background->setVisible(false);
+        ui->label_logo->setVisible(false);
+        ui->label->setStyleSheet("color:" + font_color);
+        this->setCursor(Qt::ArrowCursor);
+    }
+}
+/*
+void Dialog::wheelEvent(QWheelEvent *ev)
+{
+    if(ev->delta()>0)
+    {
+        font_size += 1;
+    }
+    else
+    {
+        font_size -= 1;
+    }
+    font.setPointSize(font_size);
+    ui->label->setFont(font);
+
+}
+*/
+
+void Dialog::tray_double_click_left(QSystemTrayIcon::ActivationReason reason)
+{
+    if(reason == QSystemTrayIcon::DoubleClick)
+    {
+        m_hide_show_slot();
+    }
 }

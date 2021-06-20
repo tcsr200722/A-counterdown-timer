@@ -10,7 +10,7 @@ QT      += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 RC_ICONS = t.ico
-VERSION = 0.1
+VERSION = 0.8
 
 TARGET = timer
 TEMPLATE = app

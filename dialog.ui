@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>381</width>
-    <height>158</height>
+    <width>2560</width>
+    <height>1600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,14 @@
   <widget class="QLabel" name="label_background">
    <property name="geometry">
     <rect>
-     <x>17</x>
-     <y>35</y>
-     <width>341</width>
-     <height>141</height>
+     <x>0</x>
+     <y>0</y>
+     <width>2560</width>
+     <height>1600</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">image: url(:/Resource/bg.png);</string>
+    <string notr="true">background-color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string/>
@@ -35,16 +35,34 @@
   <widget class="QLabel" name="label_Days1">
    <property name="geometry">
     <rect>
-     <x>28</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2032</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -58,16 +76,34 @@
   <widget class="QLabel" name="label_Days2">
    <property name="geometry">
     <rect>
-     <x>56</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2078</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -81,16 +117,34 @@
   <widget class="QLabel" name="label_Days3">
    <property name="geometry">
     <rect>
-     <x>84</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2124</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>40</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -104,16 +158,34 @@
   <widget class="QLabel" name="label_Hours1">
    <property name="geometry">
     <rect>
-     <x>137</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2200</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -127,16 +199,34 @@
   <widget class="QLabel" name="label_Hours2">
    <property name="geometry">
     <rect>
-     <x>165</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2245</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -150,16 +240,34 @@
   <widget class="QLabel" name="label_Minutes1">
    <property name="geometry">
     <rect>
-     <x>215</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2320</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -173,16 +281,34 @@
   <widget class="QLabel" name="label_Minutes2">
    <property name="geometry">
     <rect>
-     <x>243</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2365</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -196,16 +322,34 @@
   <widget class="QLabel" name="label_Seconds1">
    <property name="geometry">
     <rect>
-     <x>294</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2440</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -219,16 +363,34 @@
   <widget class="QLabel" name="label_Seconds2">
    <property name="geometry">
     <rect>
-     <x>322</x>
-     <y>80</y>
-     <width>28</width>
-     <height>49</height>
+     <x>2485</x>
+     <y>110</y>
+     <width>45</width>
+     <height>68</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>25</pointsize>
+     <pointsize>38</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -242,10 +404,10 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>2033</x>
      <y>10</y>
-     <width>331</width>
-     <height>41</height>
+     <width>491</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="font">
@@ -259,29 +421,47 @@
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>距离2022考研还有</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignBottom|Qt::AlignHCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>119</x>
-     <y>80</y>
-     <width>12</width>
-     <height>40</height>
+     <x>2178</x>
+     <y>110</y>
+     <width>45</width>
+     <height>60</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>22</pointsize>
+     <pointsize>26</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>:</string>
@@ -290,19 +470,34 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>198</x>
-     <y>80</y>
-     <width>12</width>
-     <height>40</height>
+     <x>2298</x>
+     <y>110</y>
+     <width>45</width>
+     <height>60</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>22</pointsize>
+     <pointsize>26</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>:</string>
@@ -311,24 +506,90 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>276</x>
-     <y>80</y>
-     <width>12</width>
-     <height>40</height>
+     <x>2418</x>
+     <y>110</y>
+     <width>45</width>
+     <height>60</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>45</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>45</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>22</pointsize>
+     <pointsize>26</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>:</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_num_background">
+   <property name="geometry">
+    <rect>
+     <x>2021</x>
+     <y>80</y>
+     <width>520</width>
+     <height>130</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/Resource/bg.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_logo">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>60</y>
+     <width>281</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_num_background</zorder>
+  <zorder>label_background</zorder>
+  <zorder>label_Days1</zorder>
+  <zorder>label_Days2</zorder>
+  <zorder>label_Days3</zorder>
+  <zorder>label_Hours1</zorder>
+  <zorder>label_Hours2</zorder>
+  <zorder>label_Minutes1</zorder>
+  <zorder>label_Minutes2</zorder>
+  <zorder>label_Seconds1</zorder>
+  <zorder>label_Seconds2</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_4</zorder>
+  <zorder>label_logo</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

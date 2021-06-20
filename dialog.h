@@ -19,6 +19,8 @@
 #include <QHostInfo>
 #include <QMediaPlayer>
 #include <QMouseEvent>
+#include <QtMath>
+#include <QRandomGenerator>
 
 #define AUTO_RUN "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
 #define INI_POS "HKEY_CURRENT_USER\\Software\\CountDownTimer"
@@ -42,11 +44,11 @@ private:
 
     QTimer *timer;
     QTimer *timer2;
+    QTimer *timer3;
 
     QSystemTrayIcon *m_trayIcon;
     QMenu *m_trayIconMenu;
     QAction *m_quit;
-    QAction *m_hide_show;
     QAction *m_start;
     QAction *m_clock_calibration;
 
@@ -60,8 +62,6 @@ private:
     QString font_family;
     QString font_color;
     bool font_bold;
-    int x_axis;
-    int y_axis;
     QScreen *screen;
     QFont font;
 
@@ -71,6 +71,7 @@ private:
     QString dir_path;
     QString file_path;
     QString app_name;
+    QString iniFilePath;
 
 
     QString ntpIP;
@@ -84,7 +85,13 @@ private:
     int music_volume;
 
     bool top_hint;
+/*
+    void check_collision();
+    bool up_move = false;
+    bool down_move = false;
 
+    QPoint *last_position;
+*/
 
 private slots:
     void UpdateTime();
@@ -97,9 +104,15 @@ private slots:
     void readDate();
     void clock_calibration();
     void play_music();
+    void set_full_screen();
+    void quit_full_screen();
+    void move_logo();
+    void tray_double_click_left(QSystemTrayIcon::ActivationReason reason);
 
 protected:
-    void mouseMoveEvent(QMouseEvent* event);
+    virtual void keyPressEvent(QKeyEvent *);
+    virtual void mouseDoubleClickEvent(QMouseEvent *);
+//    virtual void wheelEvent(QWheelEvent *);
 };
 
 #endif // DIALOG_H
