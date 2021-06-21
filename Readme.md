@@ -1,3 +1,4 @@
+全屏模式展示
 ![无标题](https://user-images.githubusercontent.com/45707573/122690411-07865380-d25c-11eb-97e6-aa4a6e0589f3.jpg)
 
 v.0.8更新日志
