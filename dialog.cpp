@@ -17,7 +17,7 @@ Dialog::Dialog(QWidget *parent) :
     ui->label_english->setVisible(false);
     ui->label_chinese->setVisible(false);
     //启用下面一行将使用自定义logo.png做屏保跳动图片
-    //ui->label_logo->setStyleSheet("image: url(logo.png);");
+    ui->label_logo->setStyleSheet("image: url(logo.png);");
     INIT();
 }
 
