@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 QT      += network
 QT      += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 RC_ICONS = t.ico
-VERSION = 0.8
+VERSION = 0.9.1
 
 TARGET = timer
 TEMPLATE = app

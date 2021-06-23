@@ -1,5 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include "windows.h"
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -7,8 +8,16 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->label_background->setVisible(false);
-    ui->label_logo->setStyleSheet("image: url(logo.png);");
+    ui->label_logo->move(0,0);
     ui->label_logo->setVisible(false);
+    ui->label_5->setVisible(false);
+    ui->label_6->setVisible(false);
+    ui->label_7->setVisible(false);
+    ui->label_8->setVisible(false);
+    ui->label_english->setVisible(false);
+    ui->label_chinese->setVisible(false);
+    //启用下面一行将使用自定义logo.png做屏保跳动图片
+    //ui->label_logo->setStyleSheet("image: url(logo.png);");
     INIT();
 }
 
@@ -88,11 +97,15 @@ void Dialog::readDate()
 void Dialog::INIT()
 {
     QApplication::setQuitOnLastWindowClosed(false);
+    create_datebase_connection();
     timer =  new QTimer();
     timer2 = new QTimer();
     timer3 = new QTimer();
+    timer4 = new QTimer();
+    //本地时间与网络时间的误差
     time_error = 0;
-    dir_path = QApplication::applicationDirPath() + "/config.ini";
+
+    ini_path = QApplication::applicationDirPath() + "/config.ini";
     file_path = QApplication::applicationFilePath();
     app_name = QApplication::applicationName();
 
@@ -139,22 +152,21 @@ void Dialog::INIT()
     font.setBold(font_bold);
     ui->label->setText(word);
     ui->label->setFont(font);
-
     ui->label->setStyleSheet("color:" + font_color);
 
     //连接信号与槽
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(UpdateTime()));
     QObject::connect(timer2, SIGNAL(timeout()), this, SLOT(shine()));
     QObject::connect(timer3, SIGNAL(timeout()), this, SLOT(move_logo()));
+    QObject::connect(timer4, SIGNAL(timeout()), this, SLOT(update_lock_screen_time()));
 
     //启动timer
+    timer4->start(100);
     timer->start(100);
     timer2->start(500);
     timer3->setInterval(3000);
     screen = QGuiApplication::primaryScreen ();
     this->move(0, 0);
-
-    //last_position = new QPoint;
 }
 void Dialog::SetTime(int Days,int Hours,int Minutes,int Seconds)
 {
@@ -238,6 +250,8 @@ void Dialog::UpdateTime()
 
 void Dialog::m_exit()
 {
+    QSqlDatabase db = QSqlDatabase::database("my_con");
+    db.close();
     exit(0);
 }
 
@@ -263,6 +277,12 @@ void Dialog::m_hide_show_slot()
         ui->label_Minutes2->setVisible(false);
         ui->label_Seconds1->setVisible(false);
         ui->label_Seconds2->setVisible(false);
+        ui->label_5->setVisible(false);
+        ui->label_6->setVisible(false);
+        ui->label_7->setVisible(false);
+        ui->label_8->setVisible(false);
+        ui->label_english->setVisible(false);
+        ui->label_chinese->setVisible(false);
     }
     else
     {
@@ -305,10 +325,10 @@ void Dialog::shine()
 
 void Dialog::write_ini()
 {
-    QFileInfo ini_file(dir_path);
+    QFileInfo ini_file(ini_path);
     if(!ini_file.exists())
     {
-        QSettings settings(dir_path, QSettings::IniFormat);
+        QSettings settings(ini_path, QSettings::IniFormat);
         settings.setIniCodec("UTF-8");
         settings.setValue("/settings/word", "距离考研时间还有");
         settings.setValue("/settings/deadline", "2021.12.25 00:00:00");
@@ -319,6 +339,8 @@ void Dialog::write_ini()
         settings.setValue("/settings/shining", "true");
         settings.setValue("settings/music_volume", "30");
         settings.setValue("settings/top_hint", "true");
+        settings.setValue("settings/word_start", "1");
+        settings.setValue("settings/word_end", "5493");
     }
 }
 
@@ -339,7 +361,25 @@ void Dialog::read_ini()
     shining = settings.value("settings/shining").toBool();
     music_volume = settings.value("settings/music_volume").toInt();
     top_hint = settings.value("settings/top_hint").toBool();
+    word_start = settings.value("settings/word_start").toInt();
+    word_end = settings.value("settings/word_end").toInt();
     delete  reg;
+    check_valid();
+}
+
+void Dialog::check_valid()
+{
+    if(music_volume<0 && music_volume>100)
+        music_volume=30;
+    if(word_start<1 && word_start>5493)
+        word_start=1;
+    if(word_end<1 && word_end>5493)
+        word_end=5493;
+    if(word_start>word_end)
+    {
+        word_start=1;
+        word_end=5493;
+    }
 }
 
 void Dialog::boot()
@@ -358,6 +398,7 @@ void Dialog::boot()
     }
     delete reg;
 }
+
 void Dialog::boot_at_power_on()
 {
     QSettings *reg=new QSettings(AUTO_RUN, QSettings::Registry64Format);
@@ -375,10 +416,11 @@ void Dialog::boot_at_power_on()
     delete reg;
     boot();
 }
+
 void Dialog::reg_ini()
 {
     QSettings *reg=new QSettings(INI_POS, QSettings::Registry64Format);
-    reg->setValue(app_name, dir_path);
+    reg->setValue(app_name, ini_path);
     delete reg;
 }
 
@@ -404,10 +446,19 @@ void Dialog::set_full_screen()
     timer3->start();
     ui->label_background->setVisible(true);
     ui->label_logo->setVisible(true);
+    ui->label_5->setVisible(true);
+    ui->label_6->setVisible(true);
+    ui->label_7->setVisible(true);
+    ui->label_8->setVisible(true);
     ui->label->setStyleSheet("color:#ffffff");
     this->setCursor(Qt::BlankCursor);
     if(!ui->label->isVisible())
         m_hide_show_slot();
+    if(eng_ch)
+    {
+        ui->label_english->setVisible(true);
+        ui->label_chinese->setVisible(true);
+    }
     move_logo();
 }
 
@@ -421,64 +472,57 @@ void Dialog::keyPressEvent(QKeyEvent *ev)
 
 void Dialog::move_logo()
 {
-    int x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_logo->geometry().width());
-    int y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_logo->geometry().height());
-    while(x>1098-130 && y < 50)
+    //显示中英字幕
+    if(eng_ch)
     {
-        x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_logo->geometry().width());
-        y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_logo->geometry().height());
+        ui->label_logo->move(0,0);
+        ui->label_english->setVisible(true);
+        ui->label_chinese->setVisible(true);
+        int x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_english->geometry().width());
+        int y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_english->geometry().height() - ui->label_chinese->geometry().height());
+        while((x>ui->label_Days1->geometry().x() - ui->label_english->geometry().width() && y < ui->label_Days1->geometry().y() + ui->label_Days1->geometry().height())
+              || (x<ui->label_8->geometry().x() + ui->label_8->geometry().width() && y>ui->label_5->geometry().y() - (2 * ui->label_english->geometry().height())))
+        {
+            x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_english->geometry().width());
+            y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_english->geometry().height());
+        }
+        read_datebase();
+        ui->label_english->move(x, y);
+        ui->label_chinese->move(x, y+59);
     }
-    ui->label_logo->move(x, y);
+    else
+    {
+        ui->label_english->setVisible(false);
+        ui->label_chinese->setVisible(false);
+        int x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_logo->geometry().width());
+        int y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_logo->geometry().height());
+        while((x>ui->label_Days1->geometry().x() - ui->label_logo->geometry().width() && y < ui->label_Days1->geometry().y() + ui->label_Days1->geometry().height())
+              || (x<ui->label_8->geometry().x() + ui->label_8->geometry().width() && y>ui->label_5->geometry().y() - (2 * ui->label_logo->geometry().height())))
+        {
+            x = QRandomGenerator::global()->bounded(0, QApplication::desktop()->width() - ui->label_logo->geometry().width());
+            y = QRandomGenerator::global()->bounded(0, QApplication::desktop()->height() - ui->label_logo->geometry().height());
+        }
+        ui->label_logo->move(x, y);
+    }
 }
-/*
-void Dialog::check_collision()
-{
-    //设定移动轨迹有逆时针移动
-    QPoint p = ui->label_logo->pos();
-    //轨迹为右上或者左上
-    if(up_move)
-    {
-        //检查上边线碰撞，轨迹为向左上
-        //与上边线的距离小于5px认为碰撞
-        if(p.y()<5)
-        {
-            //向左下移动，夹角90
-            down_move = true;
-            up_move = false;
-            //计算当前轨迹与上边线夹角
-            double a = last_position->y() / (1440 - p.x());
-            double angle = 90 - qTan(a) * 180 / M_PI;
 
-
-        }
-        //检查右边线碰撞，轨迹为向右上
-        else if(1440 - p.x() < 5)
-        {
-            //向左上移动，夹角90
-        }
-    }
-    //轨迹为左下或者右下
-    else if(down_move)
-    {
-        //检查左边线碰撞
-        if(p.x()<5)
-        {
-            //向原本移动方向的对角线方向移动，夹角90
-        }
-        //检查下边线碰撞
-        else if(900 - p.y() < 5)
-        {
-            //向原本移动方向的对角线方向移动，夹角90
-        }
-    }
-
-
-}
-*/
 void Dialog::mouseDoubleClickEvent(QMouseEvent *ev)
 {
-    if(ev->button() == Qt::LeftButton && ui->label_background->isHidden())
-        set_full_screen();
+    if(ev->button() == Qt::LeftButton)
+    {
+        if(ui->label_background->isHidden())
+            set_full_screen();
+        else
+        {
+            eng_ch = !eng_ch;
+            move_logo();
+            if(eng_ch)
+                timer3->setInterval(4000);
+            else
+                timer3->setInterval(3000);
+        }
+    }
+
     else if(ev->button() == Qt::RightButton)
     {
         if(ui->label_background->isVisible())
@@ -486,7 +530,6 @@ void Dialog::mouseDoubleClickEvent(QMouseEvent *ev)
         else
             m_hide_show_slot();
     }
-
 }
 
 void Dialog::quit_full_screen()
@@ -496,26 +539,16 @@ void Dialog::quit_full_screen()
         timer3->stop();
         ui->label_background->setVisible(false);
         ui->label_logo->setVisible(false);
+        ui->label_5->setVisible(false);
+        ui->label_6->setVisible(false);
+        ui->label_7->setVisible(false);
+        ui->label_8->setVisible(false);
+        ui->label_english->setVisible(false);
+        ui->label_chinese->setVisible(false);
         ui->label->setStyleSheet("color:" + font_color);
         this->setCursor(Qt::ArrowCursor);
     }
 }
-/*
-void Dialog::wheelEvent(QWheelEvent *ev)
-{
-    if(ev->delta()>0)
-    {
-        font_size += 1;
-    }
-    else
-    {
-        font_size -= 1;
-    }
-    font.setPointSize(font_size);
-    ui->label->setFont(font);
-
-}
-*/
 
 void Dialog::tray_double_click_left(QSystemTrayIcon::ActivationReason reason)
 {
@@ -523,4 +556,68 @@ void Dialog::tray_double_click_left(QSystemTrayIcon::ActivationReason reason)
     {
         m_hide_show_slot();
     }
+}
+
+void Dialog::update_lock_screen_time()
+{
+    qint64 lock_screen_time_secs = QDateTime::currentDateTime().toSecsSinceEpoch() + time_error;
+    QDateTime lock_screen_time = QDateTime::fromSecsSinceEpoch(lock_screen_time_secs);
+    int month = lock_screen_time.date().month();
+    int day = lock_screen_time.date().day();
+    QString week = lock_screen_time.toString("ddd");
+    QString hour = lock_screen_time.toString("HH");
+    QString minute = lock_screen_time.toString("mm");
+    ui->label_5->setText(hour);
+    ui->label_7->setText(minute);
+    QString a = QString::asprintf("%d月%d日，", month, day);
+    week = tranfer_week(week);
+    ui->label_8->setText(a+week); 
+}
+
+QString Dialog::tranfer_week(QString week)
+{
+    if(week == "周一")
+        return "星期一";
+    else if(week == "周二")
+        return "星期二";
+    else if(week == "周三")
+        return "星期三";
+    else if(week == "周四")
+        return "星期四";
+    else if(week == "周五")
+        return "星期五";
+    else if(week == "周六")
+        return "星期六";
+    else
+        return "星期日";
+}
+
+bool Dialog::create_datebase_connection()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "my_con");
+    QString tmp = QApplication::applicationDirPath()+"/words.db";
+    db.setDatabaseName(tmp);
+    qDebug()<<db.connectionName();
+    if(!db.open())
+    {
+        qDebug()<<"OPENFAILED";
+        return false;
+    }
+    return true;
+}
+
+void Dialog::read_datebase()
+{
+    QSqlDatabase db = QSqlDatabase::database("my_con");
+    QSqlQuery query(db);
+    int x = QRandomGenerator::global()->bounded(word_start, word_end+1);
+    QString cmd = QString::asprintf("select * from dancibiao where id = %d;", x);
+    query.exec(cmd);
+    if(query.first())
+    {
+        qDebug()<<query.value(1).toString();
+        ui->label_english->setText(query.value(1).toString());
+        ui->label_chinese->setText(query.value(2).toString());
+    }
+    qDebug()<<query.value(1).toString();
 }

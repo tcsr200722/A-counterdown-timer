@@ -21,6 +21,12 @@
 #include <QMouseEvent>
 #include <QtMath>
 #include <QRandomGenerator>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#endif
 
 #define AUTO_RUN "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
 #define INI_POS "HKEY_CURRENT_USER\\Software\\CountDownTimer"
@@ -38,13 +44,17 @@ public:
     void INIT();
 
 
+
+
 private:
     Ui::Dialog *ui;
-    void SetTime(int,int,int,int);
 
+    void SetTime(int,int,int,int);
+    qint64 time_error;
     QTimer *timer;
     QTimer *timer2;
     QTimer *timer3;
+    QTimer *timer4;
 
     QSystemTrayIcon *m_trayIcon;
     QMenu *m_trayIconMenu;
@@ -52,46 +62,42 @@ private:
     QAction *m_start;
     QAction *m_clock_calibration;
 
-    void write_ini();
-    void read_ini();
-    void reg_ini();
-
     QString word;
     QString deadline;
     int font_size;
     QString font_family;
     QString font_color;
     bool font_bold;
+    int music_volume;
+    bool top_hint;
+    bool eng_ch = false;
+    int word_start;
+    int word_end;
+
     QScreen *screen;
     QFont font;
 
     bool shine_ = true;
     bool shining;
 
-    QString dir_path;
+    QString ini_path;
     QString file_path;
     QString app_name;
     QString iniFilePath;
 
-
     QString ntpIP;
     QUdpSocket *udpSocket;
 
-    qint64 time_error;
-    bool _setsystemtime();
-
     QMediaPlayer *player;
 
-    int music_volume;
-
-    bool top_hint;
-/*
-    void check_collision();
-    bool up_move = false;
-    bool down_move = false;
-
-    QPoint *last_position;
-*/
+    void check_valid();
+    bool create_datebase_connection();
+    void read_datebase();
+    bool _setsystemtime();
+    void write_ini();
+    void read_ini();
+    void reg_ini();
+    QString tranfer_week(QString);
 
 private slots:
     void UpdateTime();
@@ -108,6 +114,7 @@ private slots:
     void quit_full_screen();
     void move_logo();
     void tray_double_click_left(QSystemTrayIcon::ActivationReason reason);
+    void update_lock_screen_time();
 
 protected:
     virtual void keyPressEvent(QKeyEvent *);
