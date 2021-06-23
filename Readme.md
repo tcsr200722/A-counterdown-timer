@@ -1,5 +1,10 @@
-全屏模式展示
-![无标题](https://user-images.githubusercontent.com/45707573/122690411-07865380-d25c-11eb-97e6-aa4a6e0589f3.jpg)
+桌面模式下
+![Snipaste_2021-06-23_13-41-00](https://user-images.githubusercontent.com/45707573/123042102-e161de80-d428-11eb-85c4-17cf507e354f.png)
+全屏模式A下
+![Snipaste_2021-06-23_13-41-12](https://user-images.githubusercontent.com/45707573/123042117-e7f05600-d428-11eb-9eb6-91568bafc6fa.png)
+全屏模式B下
+![Snipaste_2021-06-23_13-41-29](https://user-images.githubusercontent.com/45707573/123042156-f474ae80-d428-11eb-8ca3-a64df5a4a370.png)
+
 
 v.0.8更新日志
 增加全屏模式，可作屏保；
