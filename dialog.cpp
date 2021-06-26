@@ -371,6 +371,12 @@ void Dialog::check_valid()
 {
     if(music_volume<0 && music_volume>100)
         music_volume=30;
+    if(word_start==0 && word_end==0)
+    {
+        word_start = 1;
+        word_end = 5493;
+        return;
+    }
     if(word_start<1 && word_start>5493)
         word_start=1;
     if(word_end<1 && word_end>5493)
