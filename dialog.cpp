@@ -488,7 +488,7 @@ void Dialog::move_logo()
         }
         read_datebase();
         ui->label_english->move(x, y);
-        ui->label_chinese->move(x, y+59);
+        ui->label_chinese->move(x, y + ui->label_english->geometry().height() + 10);
     }
     else
     {
